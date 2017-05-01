@@ -1,0 +1,5 @@
+Usage
+=====
+  scrapy runspider [options] <spider_file>
+
+runspider: error: -t option requires an argument
