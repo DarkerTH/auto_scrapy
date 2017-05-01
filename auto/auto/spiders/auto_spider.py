@@ -1,13 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.insert(0, '/home/darker/.local/lib/python2.7/site-packages');
+
+import random
+from random import randint
+
 import scrapy
+from scrapy.crawler import CrawlerProcess
+
+file_name = randint(1000000, 999999999);
 
 class AutoSpider(scrapy.Spider):
     name = "auto"
     allowed_domains = ["autoplius.lt"];
 
     def start_requests(self, domain=None, *args, **kwargs):
+        sys.path
         super(AutoSpider, self).__init__(*args, **kwargs)
 
         #define auto-classified websites here
@@ -38,3 +48,16 @@ class AutoSpider(scrapy.Spider):
                     'price': ''.join(item.css('.fr .price-list .fl strong::text').re(r'\d+')),
                 }
         return rules
+
+    def closed(self, reason):
+        if reason == "finished":
+            print(file_name)
+
+process = CrawlerProcess({
+    'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+    'FEED_FORMAT': 'json',
+    'FEED_URI': '{0}.json'.format(file_name)
+})
+
+process.crawl(AutoSpider, manufacturer=sys.argv[1], model=sys.argv[2])
+process.start() # the script will block here until the crawling is finished
