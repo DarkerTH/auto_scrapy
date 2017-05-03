@@ -2,7 +2,8 @@
     "name": "darkerth/auto_scrapy",
     "description": "Car-ads crawler",
     "author": "Skirmantas Januškas <skirmantas.januskas@gmail.com>",
-    "version": "0.1",
+    "type": "project",
+    "version": "1.0",
     "license": "MIT",
     "require": {}
 }
