@@ -1,5 +1,5 @@
 # Car-ads crawler
-Crawl data from various Lithuanian car-ads websites.  
+Crawl todays ads from various Lithuanian car-ads websites based on some parameters.
 
 ## Requirements
 * Python 2.7+
