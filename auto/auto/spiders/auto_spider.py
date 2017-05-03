@@ -10,7 +10,7 @@ from random import randint
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
-file_name = randint(1000000, 999999999);
+file_name = sys.argv[1]
 
 class AutoSpider(scrapy.Spider):
     name = "auto"
@@ -89,5 +89,5 @@ process = CrawlerProcess({
     'FEED_URI': '{0}.json'.format(file_name)
 })
 
-process.crawl(AutoSpider, manufacturer=sys.argv[1], model=sys.argv[2])
+process.crawl(AutoSpider, manufacturer=sys.argv[2], model=sys.argv[3])
 process.start() # the script will block here until the crawling is finished
