@@ -90,7 +90,7 @@ process = CrawlerProcess({
     'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
     'FEED_FORMAT': 'json',
     'FEED_EXPORT_ENCODING': 'utf-8',
-    'FEED_URI': 'result.json'.format(file_name)
+    'FEED_URI': '{0}.json'.format(sys.argv[1])
 })
 
 process.crawl(AutoSpider, manufacturer=sys.argv[2], model=sys.argv[3], year_from=sys.argv[4], year_to=sys.argv[5], price_from=sys.argv[6], price_to=sys.argv[7])
