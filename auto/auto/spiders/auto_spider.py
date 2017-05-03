@@ -10,7 +10,10 @@ from random import randint
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
+import json
+
 file_name = sys.argv[1]
+items = []
 
 class AutoSpider(scrapy.Spider):
     name = "auto"
@@ -19,18 +22,17 @@ class AutoSpider(scrapy.Spider):
     def start_requests(self, domain=None, *args, **kwargs):
         sys.path
         super(AutoSpider, self).__init__(*args, **kwargs)
-
         #define auto-classified websites here
         websites = [
             {
               'title': 'autogidas',
               'ad-div': '.item-link',
-              'url': 'https://autogidas.lt/automobiliai/?f_1%5B1%5D={0}&f_model_14%5B1%5D={1}&f_60=6315&s=314872003'.format(self.manufacturer, self.model),
+              'url': 'https://autogidas.lt/automobiliai/?f_1%5B1%5D={0}&f_model_14%5B1%5D={1}&f_41={2}&f_42={3}&f_215={4}&f_216={5}&f_60=6315&f_50=atnaujinimo_laika_asc'.format(self.manufacturer, self.model, self.year_from, self.year_to, self.price_from, self.price_to),
             },
             {
               'title': 'autoplius',
               'ad-div': 'div.item',
-              'url': 'https://autoplius.lt/skelbimai/naudoti-automobiliai/{0}/{1}?make_id_list=99&older_not=-1&order_by=3&order_direction=DESC'.format(self.manufacturer, self.model),
+              'url': 'https://autoplius.lt/skelbimai/naudoti-automobiliai/{0}/{1}?engine_capacity_from=&engine_capacity_to=&power_from=&power_to=&kilometrage_from=&kilometrage_to=&has_damaged_id=&color_id=&condition_type_id=&make_date_from={2}&make_date_to={3}&sell_price_from={4}&sell_price_to={5}&fuel_id=&gearbox_id=&body_type_id=&wheel_drive_id=&number_of_seats_id=&number_of_doors_id=&fk_place_countries_id=&steering_wheel_id=&origin_country_id=&older_not=-1&qt=&order_by=3&order_direction=DESC'.format(self.manufacturer, self.model, self.year_from, self.year_to, self.price_from, self.price_to),
             }
         ]
         for website in websites:
@@ -38,7 +40,9 @@ class AutoSpider(scrapy.Spider):
 
     def parse(self, response):
         for item in response.css(response.meta.get('ad-div')):
-            yield AutoSpider.get_rules(self, response.meta.get('website'), item)
+            parsed = AutoSpider.get_rules(self, response.meta.get('website'), item)
+            items.append(parsed)
+            yield parsed
 
     def get_rules(self, website, item):
         rules = {};
@@ -80,14 +84,14 @@ class AutoSpider(scrapy.Spider):
 
     def closed(self, reason):
         if reason == "finished":
-            print(file_name)
+            print(json.dumps(items))
 
 process = CrawlerProcess({
     'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
     'FEED_FORMAT': 'json',
     'FEED_EXPORT_ENCODING': 'utf-8',
-    'FEED_URI': '{0}.json'.format(file_name)
+    'FEED_URI': 'result.json'.format(file_name)
 })
 
-process.crawl(AutoSpider, manufacturer=sys.argv[2], model=sys.argv[3])
+process.crawl(AutoSpider, manufacturer=sys.argv[2], model=sys.argv[3], year_from=sys.argv[4], year_to=sys.argv[5], price_from=sys.argv[6], price_to=sys.argv[7])
 process.start() # the script will block here until the crawling is finished
