@@ -73,7 +73,7 @@ def load_lines(path):
 
 process = CrawlerProcess({
     'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
-    'ROTATING_PROXY_LIST': load_lines('proxies.txt'),
+    'ROTATING_PROXY_LIST': load_lines('/var/www/html/auto_scrapy/auto/spiders/proxies.txt'),
     'DOWNLOADER_MIDDLEWARES': {
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
         'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,

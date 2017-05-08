@@ -97,7 +97,7 @@ process = CrawlerProcess({
     'FEED_FORMAT': 'json',
     'FEED_EXPORT_ENCODING': 'utf-8',
     'FEED_URI': '{0}.json'.format(sys.argv[1]),
-    'ROTATING_PROXY_LIST': load_lines('proxies.txt'),
+    'ROTATING_PROXY_LIST': load_lines('/var/www/html/auto_scrapy/auto/spiders/proxies.txt'),
     'DOWNLOADER_MIDDLEWARES': {
         'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
         'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
