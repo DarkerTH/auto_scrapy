@@ -49,6 +49,7 @@ class AutoSpider(scrapy.Spider):
             letter_e = 'ė'.decode('utf-8');
             rules = {
                     'url': ''.join(['https://autogidas.lt', item.css('::attr(href)').extract_first()]),
+                    'img_url': item.css('.ad .right .image img::attr(src)').extract_first(),
                     'title': item.css('.ad .right .description .item-title::text').extract_first(),
                     'year': item.css('.ad .right .description .item-description .primary::text').re('\d{4}\-\d{2}')[0],
                     'gearbox': ''.join([item.css('.ad .right .description .item-description .primary::text').re('Automatin|Mechanin')[0], letter_e]),
@@ -66,6 +67,7 @@ class AutoSpider(scrapy.Spider):
         if website == 'autoplius':
             rules = {
                     'url': item.css('.item-section .title-list a::attr(href)').extract_first(),
+                    'img_url': item.css('.thumb a img::attr(src)').extract_first(),
                     'title': item.css('.item-section .title-list a::text').extract_first(),
                     'year': item.css('.item-section .param-list div span[title="Pagaminimo data"]::text').extract_first(),
                     'fuel': item.css('.item-section .param-list div span[title="Kuro tipas"]::text').extract_first(),
