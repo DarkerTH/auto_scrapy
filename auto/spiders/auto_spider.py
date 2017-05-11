@@ -28,7 +28,7 @@ class AutoSpider(scrapy.Spider):
             {
               'title': 'autoplius',
               'ad-div': 'div.item',
-              'url': 'https://autoplius.lt/skelbimai/naudoti-automobiliai/{0}/{1}?engine_capacity_from=&engine_capacity_to=&power_from=&power_to=&kilometrage_from=&kilometrage_to=&has_damaged_id=&color_id=&condition_type_id=&make_date_from={2}&make_date_to={3}&sell_price_from={4}&sell_price_to={5}&fuel_id=&gearbox_id=&body_type_id=&wheel_drive_id=&number_of_seats_id=&number_of_doors_id=&fk_place_countries_id=&steering_wheel_id=&origin_country_id=&older_not=-1&qt=&order_by=3&order_direction=DESC'.format(self.manufacturer_model['autoplius']['manufacturer'], self.manufacturer_model['autoplius']['model'], self.year_from, self.year_to, self.price_from, self.price_to),
+              'url': 'https://autoplius.lt/skelbimai/naudoti-automobiliai/?make_id={0}&model_id={1}&engine_capacity_from=&engine_capacity_to=&power_from=&power_to=&kilometrage_from=&kilometrage_to=&has_damaged_id=&color_id=&condition_type_id=&make_date_from={2}&make_date_to={3}&sell_price_from={4}&sell_price_to={5}&fuel_id=&gearbox_id=&body_type_id=&wheel_drive_id=&number_of_seats_id=&number_of_doors_id=&fk_place_countries_id=&steering_wheel_id=&origin_country_id=&older_not=-1&qt=&order_by=3&order_direction=DESC'.format(self.manufacturer_model['autoplius']['manufacturer'], self.manufacturer_model['autoplius']['model'], self.year_from, self.year_to, self.price_from, self.price_to),
             }
         ]
 
