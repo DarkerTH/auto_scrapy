@@ -48,6 +48,7 @@ class AutoSpider(scrapy.Spider):
         if website == 'autogidas':
             letter_e = 'ė'.decode('utf-8');
             rules = {
+                    'id': item.css('.item-link .ad ::attr(data-ad-id)').extract_first(),
                     'url': ''.join(['https://autogidas.lt', item.css('::attr(href)').extract_first()]),
                     'img_url': item.css('.ad .right .image img::attr(src)').extract_first(),
                     'title': item.css('.ad .right .description .item-title::text').extract_first(),
@@ -66,6 +67,7 @@ class AutoSpider(scrapy.Spider):
 
         if website == 'autoplius':
             rules = {
+                    'id': item.css('.item-section .title-list a::attr(href)').re(r'(?:.*)-([0-9]{1,10})')[0],
                     'url': item.css('.item-section .title-list a::attr(href)').extract_first(),
                     'img_url': item.css('.thumb a img::attr(src)').extract_first(),
                     'title': item.css('.item-section .title-list a::text').extract_first(),
