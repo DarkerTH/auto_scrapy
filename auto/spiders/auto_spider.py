@@ -34,13 +34,29 @@ class AutoSpider(scrapy.Spider):
 
         super(AutoSpider, self).__init__(*args, **kwargs)
         for website in websites:
-            yield scrapy.Request(url=website['url'], callback=self.parse, meta={'website': website['title'], 'ad-div': website['ad-div']})
+            yield scrapy.Request(url=website['url'], callback=self.parse, meta={'website': website, 'ad-div': website['ad-div']})
 
     def parse(self, response):
+        website = response.meta.get('website')
         for item in response.css(response.meta.get('ad-div')):
-            parsed = AutoSpider.get_rules(self, response.meta.get('website'), item)
+            parsed = AutoSpider.get_rules(self, website['title'], item)
             items.append(parsed)
             yield parsed
+
+        if website['title'] == 'autoplius':
+            next = response.css('.next ::attr(href)').extract_first()
+
+        if website['title'] == 'autogidas':
+            next = response.css('.next-page-block a::attr(href)').extract_first()
+
+        if next:
+            if website['title'] == 'autoplius':
+                next = ''.join(['https://autoplius.lt', next])
+
+            if website['title'] == 'autogidas':
+                next = ''.join(['https://autogidas.lt', next])
+
+            yield scrapy.Request(url=next, callback=self.parse, meta={'website': website, 'ad-div': website['ad-div']})
 
     def get_rules(self, website, item):
         rules = {};
@@ -86,7 +102,6 @@ class AutoSpider(scrapy.Spider):
 
     def closed(self, reason):
         if reason == "finished":
-
             print(json.dumps(items))
 
 def load_lines(path):
